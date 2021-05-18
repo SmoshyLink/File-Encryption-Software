@@ -1,3 +1,22 @@
+import os
+
+#open file
+def open_file(filename):
+	file = open(filename, "rb")
+	byte = file.read(8)
+	byte2hex=byte
+	print(type(byte))
+	while byte:
+		print(byte)
+		byte = file.read(8)
+		byte2hex+=byte
+	file.close()
+	print("BYTE TO HEX:","\n",byte2hex)
+	plaintext=byte2hex.hex().upper()
+	print("HEX VERSION:\n",plaintext)
+	return plaintext
+
+
 # Hexadecimal to binary conversion
 def hex2bin(s):
 	mp = {'0' : "0000",
@@ -307,8 +326,11 @@ for i in range(0, 16):
 	rkb.append(round_key)
 
 
-input = input("Message to encrypt : ")
-input = str2hex(input).upper()
+#OPENING FILE======================================
+file_location = "user input from GUI"
+file_extension = os.path.splitext(file_location)
+
+input=open_file(file_location) #input is a non-broken down hex from the byte contents of the file
 
 print("Encryption")
 
@@ -316,9 +338,9 @@ print("Hex Plain Text : ", input)
 
 def run_des(plain_text):
     cipher_text = ""
-    plain_text = breakdowntext(plain_text)
+    plain_text = breakdowntext(plain_text) #breaks down hex from file
     if str(type(plain_text)) == "<class 'str'>":
-        cipher_text = bin2hex(encrypt(plain_text, rkb))
+        cipher_text = bin2hex(encrypt(plain_text, rkb)) #then encrypts thisbroken hex
     
     elif str(type(plain_text)) == "<class 'list'>":
         for i in range(0, len(plain_text)):
@@ -330,21 +352,37 @@ def run_des(plain_text):
 cipher_text = run_des(input)
 print("Cipher Text: ", cipher_text)
 
+# CREATE ENCRYPTED FILE=================================================
+enc_file = "enc" + file_extension
+with open(enc_file, "wb") as f:
+    f.write(bytes.fromhex(cipher_text))
+
 
 print("Decryption")
 
 def decrypt_des(cipher_text):
-    plain_text = ""
-    rkb_rev = rkb[::-1]
-    cipher_text = breakdowntext(cipher_text)
-    if str(type(cipher_text)) == "<class 'str'>":
-        plain_text = bin2hex(encrypt(cipher_text, rkb_rev))
-        
-    elif str(type(cipher_text)) == "<class 'list'>":
-        for i in range(0, len(cipher_text)):
-            plain_text += bin2hex(encrypt(cipher_text[i], rkb_rev))
-                                  
-    return hex2str(plain_text)
+	plain_text = ""
+	rkb_rev = rkb[::-1]
+	cipher_text = breakdowntext(cipher_text)
+	if str(type(cipher_text)) == "<class 'str'>":
+		plain_text = bin2hex(encrypt(cipher_text, rkb_rev))
+		
+	elif str(type(cipher_text)) == "<class 'list'>":
+		for i in range(0, len(cipher_text)):
+			plain_text += bin2hex(encrypt(cipher_text[i], rkb_rev))		
+
+	for i in range(0, len(plain_text)):
+		if plain_text[i] == ' ':
+			plain_text = plain_text[:i]
+
+	return bytes.fromhex(plain_text)
+
+
     
 plain_text = decrypt_des(cipher_text)
 print("Decrypted cipher text : ", plain_text)
+
+# CREATE DECRYPTED FILE ======================================================
+dec_file = "dec" + file_extension
+with open(dec_file, "wb") as f:
+    f.write(plain_text)
