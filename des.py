@@ -275,11 +275,13 @@ def breakdowntext(s):
 
 def get_key():
     key = input("Input DES key : ")
+    key = hex2bin(key)
+	key = permute(key, keyp, 56)
     
 #key = "AABB09182736CCDD"
 # Key generation
 # --hex to binary
-key = hex2bin(key)
+#key = hex2bin(key)
 
 # --parity bit drop table
 keyp = [57, 49, 41, 33, 25, 17, 9,
@@ -292,7 +294,7 @@ keyp = [57, 49, 41, 33, 25, 17, 9,
 		21, 13, 5, 28, 20, 12, 4 ]
 
 # getting 56 bit key from 64 bit using the parity bits
-key = permute(key, keyp, 56)
+#key = permute(key, keyp, 56)
 
 # Number of bit shifts
 shift_table = [1, 1, 2, 2,
@@ -311,22 +313,32 @@ key_comp = [14, 17, 11, 24, 1, 5,
 			46, 42, 50, 36, 29, 32 ]
 
 # Splitting
-left = key[0:28] # rkb for RoundKeys in binary
-right = key[28:56] # rk for RoundKeys in hexadecimal
+#left = key[0:28] # rkb for RoundKeys in binary
+#right = key[28:56] # rk for RoundKeys in hexadecimal
 
-rkb = []
-for i in range(0, 16):
-	# Shifting the bits by nth shifts by checking from shift table
-	left = shift_left(left, shift_table[i])
-	right = shift_left(right, shift_table[i])
-	
-	# Combination of left and right string
-	combine_str = left + right
-	
-	# Compression of key from 56 to 48 bits
-	round_key = permute(combine_str, key_comp, 48)
+def get_left_key(key):
+    return key[0:28]
 
-	rkb.append(round_key)
+def get_right_key(key):
+    return key[28:56]
+
+def get_round_keys(key):
+	rkb = []
+	for i in range(0, 16):
+		left = get_left_key(key)
+		right = get_right_key(key)
+		# Shifting the bits by nth shifts by checking from shift table
+		left = shift_left(left, shift_table[i])
+		right = shift_left(right, shift_table[i])
+		
+		# Combination of left and right string
+		combine_str = left + right
+		
+		# Compression of key from 56 to 48 bits
+		round_key = permute(combine_str, key_comp, 48)
+
+		rkb.append(round_key)
+	return rkb
 
 
 #OPENING FILE======================================
@@ -369,9 +381,9 @@ def create_enc_file(cipher_text):
 		f.write(bytes.fromhex(cipher_text))
 
 
-print("Decryption")
+#print("Decryption")
 
-def decrypt_des(cipher_text):
+def decrypt_des(cipher_text, rkb):
 	plain_text = ""
 	rkb_rev = rkb[::-1]
 	cipher_text = breakdowntext(cipher_text)
