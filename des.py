@@ -274,7 +274,7 @@ def breakdowntext(s):
         
 
 def get_key(key):
-    key = input("Input DES key : ")
+    #key = input("Input DES key : ")
     key = hex2bin(key)
     key = permute(key, keyp, 56)
     return key
