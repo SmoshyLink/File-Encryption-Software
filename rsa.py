@@ -172,7 +172,7 @@ def decrypt(privateKey, filename):
 
     #apply RSA decryption equation: (message^d)mod n
     plainText = [chr((char ** d) % n) for char in cipherText]
-    with open("1a.jpg", "wb") as f:
+    with open(filename, "wb") as f:
         f.write(bytes.fromhex(''.join(plainText)))
 
     #return hex string
