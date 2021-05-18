@@ -1,8 +1,9 @@
 #take message string
 #encrypt and print
 #decrypt and print
-import os
+
 import random
+import pickle
 
 #Open file function ---- takes filename string 
 def open_file(filename):
@@ -148,65 +149,40 @@ def create_keys():
 
 #Function to encrypt plaintext; --- tuple(publicKey) and hex string (plainText)
 def encrypt(publicKey, filename):
-    plainText=open_file(filename)
     e, n = publicKey
+    plainText=open_file(filename)
 
     #apply RSA ecnryption equation: (message^e)mod n
     cipherText = [(ord(char) ** e) % n for char in plainText]
+
+    with open(filename, "wb") as f:
+        pickle.dump(cipherText,f)
     
     #return list of integers
-    return cipherText
+    return 
 
 
 #function to decrypt ciphertext--- tuple(privateKey) and hex string (cipherText)
-def decrypt(privateKey, cipherText):
+def decrypt(privateKey, filename):
+    
+    with open(filename, "rb") as f:
+        cipherText= pickle.load(f)
     
     d, n = privateKey
 
     #apply RSA decryption equation: (message^d)mod n
     plainText = [chr((char ** d) % n) for char in cipherText]
+    with open("1a.jpg", "wb") as f:
+        f.write(bytes.fromhex(''.join(plainText)))
 
     #return hex string
-    return ''.join(plainText)
+    return 
 
 
 #### RUN PROGRAM ####------------------------
-#print("You have chosen RSA encryption\nGenerating keys......")
-#publicKey, privateKey = create_keys()
-#print("Public key: ",publicKey, "\nPrivate key: ", privateKey)
 
-spacer=".\n"*10
-
-def get_file():
-    file_location = "user input from GUI"
-    return file_location
-
-def get_extension(file_location):
-    file_extension = os.path.splitext(file_location)
-    return file_extension
-
-#plain_text = open_file(file_location)
-#print("PLAIN TEXT: ","\n",plain_text)
-
-#cipher_text=encrypt(publicKey,plain_text)
-#cipher_text2=''.join([chr(char) for char in cipher_text])
-
-'''with open("2.txt", "wb") as f:
-    f.write(bytes.fromhex(cipher_text2))'''
-
-#print(spacer,"ENCRYPTION: ","\n",cipher_text)
-
-#decrypted_text=decrypt(privateKey,cipher_text)
-#print(spacer,"DECRYPTION: ","\n",decrypted_text)
-
-#print(spacer,"CHECKING THE TEXTS ARE EQUAL:\n",plain_text==decrypted_text)
-
-# CREATE DECRYPTED FILE =============================
-
-def create_dec_file(decrypted_text):
-    dec_file = "dec" + file_extension
-    with open(dec_file, "wb") as f:
-        f.write(bytes.fromhex(decrypted_text)) #conert hex string to bytes and write bytes to file
-
-
+#publicKey=(1063, 1643)
+#privateKey=(1447,1643)
+#encrypt(publicKey,"1a.jpg")
+#decrypt(privateKey,"1a.jpg")
 
