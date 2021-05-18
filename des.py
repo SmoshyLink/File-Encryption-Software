@@ -344,9 +344,8 @@ def get_round_keys(key):
 
 #OPENING FILE======================================
 
-def get_file():
-	file_location = "user input from GUI"
-	return file_location
+def get_file(file_location):
+	return open_file(file_location)
 
 def get_extension(file_location):
 	file_extension = os.path.splitext(file_location)
