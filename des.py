@@ -276,7 +276,7 @@ def breakdowntext(s):
 def get_key():
     key = input("Input DES key : ")
     key = hex2bin(key)
-	key = permute(key, keyp, 56)
+    key = permute(key, keyp, 56)
     
 #key = "AABB09182736CCDD"
 # Key generation
@@ -377,8 +377,8 @@ def run_des(plain_text):
 # CREATE ENCRYPTED FILE=================================================
 def create_enc_file(cipher_text):
     enc_file = "enc" + file_extension
-	with open(enc_file, "wb") as f:
-		f.write(bytes.fromhex(cipher_text))
+    with open(enc_file, "wb") as f:
+        f.write(bytes.fromhex(cipher_text))
 
 
 #print("Decryption")
@@ -408,8 +408,8 @@ def decrypt_des(cipher_text, rkb):
 # CREATE DECRYPTED FILE ======================================================
 def create_dec_file(plain_text):
     dec_file = "dec" + file_extension
-	with open(dec_file, "wb") as f:
-		f.write(plain_text)
+    with open(dec_file, "wb") as f:
+        f.write(plain_text)
   
 """"
 HOW TO USE:
