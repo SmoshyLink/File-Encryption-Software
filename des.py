@@ -273,10 +273,11 @@ def breakdowntext(s):
     else: return s
         
 
-def get_key():
+def get_key(key):
     key = input("Input DES key : ")
     key = hex2bin(key)
     key = permute(key, keyp, 56)
+    return key
     
 #key = "AABB09182736CCDD"
 # Key generation
@@ -358,7 +359,7 @@ def get_extension(file_location):
 
 #print("Hex Plain Text : ", input)
 
-def run_des(plain_text):
+def run_des(plain_text, rkb):
     cipher_text = ""
     plain_text = breakdowntext(plain_text) #breaks down hex from file
     if str(type(plain_text)) == "<class 'str'>":
