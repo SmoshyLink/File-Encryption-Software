@@ -347,6 +347,9 @@ def get_round_keys(key):
 def get_file(file_location):
 	return open_file(file_location)
 
+def get_filename(file_location):
+	return file_location
+
 def get_extension(file_location):
 	file_extension = os.path.splitext(file_location)
 	return file_extension
@@ -375,9 +378,9 @@ def run_des(plain_text, rkb):
 #print("Cipher Text: ", cipher_text)
 
 # CREATE ENCRYPTED FILE=================================================
-def create_enc_file(cipher_text):
-    enc_file = "enc" + file_extension
-    with open(enc_file, "wb") as f:
+def create_enc_file(cipher_text, file_location):
+    #enc_file = "enc" + file_extension
+    with open(file_location, "wb") as f:
         f.write(bytes.fromhex(cipher_text))
 
 
@@ -406,9 +409,9 @@ def decrypt_des(cipher_text, rkb):
 #print("Decrypted cipher text : ", plain_text)
 
 # CREATE DECRYPTED FILE ======================================================
-def create_dec_file(plain_text):
-    dec_file = "dec" + file_extension
-    with open(dec_file, "wb") as f:
+def create_dec_file(plain_text, file_location):
+    #dec_file = "dec" + file_extension
+    with open(file_location, "wb") as f:
         f.write(plain_text)
   
 """"
