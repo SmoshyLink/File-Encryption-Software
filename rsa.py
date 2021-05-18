@@ -147,7 +147,8 @@ def create_keys():
 
 
 #Function to encrypt plaintext; --- tuple(publicKey) and hex string (plainText)
-def encrypt(publicKey, plainText):
+def encrypt(publicKey, filename):
+    plainText=open_file(filename)
     e, n = publicKey
 
     #apply RSA ecnryption equation: (message^e)mod n
