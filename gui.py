@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter.filedialog import askopenfilename
+from tkinter import messagebox
 import aes
 import des
 import rsa
@@ -18,6 +19,13 @@ def browse():
     file_name.delete(0)
     file_name.insert(0, picked_filename)
 
+def generate_rsa_key_pair():
+    pubpair, privpair = rsa.create_keys()
+    rsa_pubkey_pair.delete(0)
+    rsa_pubkey_pair.insert(0, f"{pubpair[0]},{pubpair[1]}")
+    rsa_privkey_pair.delete(0)
+    rsa_privkey_pair.insert(0, f"{privpair[0]},{privpair[1]}")
+
 def encrypt():
     file_to_encrypt = file_name.get()
 
@@ -33,7 +41,12 @@ def encrypt():
                             file_to_encrypt)
 
     elif algo.get() == 2: # RSA
-        key = rsa_privkey_pair.get()
+        key = rsa_pubkey_pair.get()
+        splitkey = key.split(",")
+        key_tuple = (splitkey[0], splitkey[1])
+        rsa.encrypt(key_tuple, file_to_encrypt)
+    
+    messagebox.showinfo("Encryption Completed", "Your file has been encrypted.")
 
 def decrypt():
     file_to_decrypt = file_name.get()
@@ -51,6 +64,11 @@ def decrypt():
 
     elif algo.get() == 2: # RSA
         key = rsa_privkey_pair.get()
+        splitkey = key.split(",")
+        key_tuple = (splitkey[0], splitkey[1])
+        rsa.decrypt(key_tuple, file_to_decrypt)
+
+    messagebox.showinfo("Decryption Completed", "Your file has been decrypted.")
 
 def run_app():
     window = tk.Tk()
@@ -104,10 +122,14 @@ def run_app():
     aes_info_label = tk.Label(key_frame, text="AES key: 32 or 64 hex chars")
     des_info_label = tk.Label(key_frame, text="DES keys: 16 hex chars")
     rsa_pubkey_pair_label = tk.Label(key_frame, text="RSA Public Key")
+    global rsa_pubkey_pair
     rsa_pubkey_pair = tk.Entry(key_frame)
     rsa_privkey_pair_label = tk.Label(key_frame, text="RSA Private Key")
+    global rsa_privkey_pair
     rsa_privkey_pair = tk.Entry(key_frame)
     rsa_info_label = tk.Label(key_frame, text="RSA keys in the format of x,y")
+    generate_rsa_button = tk.Button(key_frame, text="Generate RSA key pair",
+                                    command=generate_rsa_key_pair)
 
     aes_des_key_label.grid(row=0, column=0)
     aes_des_key.grid(row=0, column=1)
@@ -118,6 +140,7 @@ def run_app():
     rsa_privkey_pair_label.grid(row=3, column=0)
     rsa_privkey_pair.grid(row=3, column=1)
     rsa_info_label.grid(row=4, column=0)
+    generate_rsa_button.grid(row=4, column=1)
 
     key_frame.grid(row=2, column=1)
 

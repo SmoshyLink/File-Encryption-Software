@@ -93,7 +93,7 @@ def isPrime(numb):
     return True
 
 #list of prime numbers global variable
-primes = [i for i in range(0,100) if isPrime(i)]
+primes = [i for i in range(0,100000) if isPrime(i)]
 
 #HELPER FUNCTION: finding d -- int arg
 def mod_inverse(a,b):
