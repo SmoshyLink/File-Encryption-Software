@@ -170,33 +170,42 @@ def decrypt(privateKey, cipherText):
 
 
 #### RUN PROGRAM ####------------------------
-print("You have chosen RSA encryption\nGenerating keys......")
-publicKey, privateKey = create_keys()
-print("Public key: ",publicKey, "\nPrivate key: ", privateKey)
+#print("You have chosen RSA encryption\nGenerating keys......")
+#publicKey, privateKey = create_keys()
+#print("Public key: ",publicKey, "\nPrivate key: ", privateKey)
 
 spacer=".\n"*10
 
-file_location = "user input from GUI"
-file_extension = os.path.splitext(file_location)
+def get_file():
+    file_location = "user input from GUI"
+    return file_location
 
-plain_text = open_file(file_location)
-print("PLAIN TEXT: ","\n",plain_text)
+def get_extension(file_location):
+    file_extension = os.path.splitext(file_location)
+    return file_extension
 
-cipher_text=encrypt(publicKey,plain_text)
-cipher_text2=''.join([chr(char) for char in cipher_text])
+#plain_text = open_file(file_location)
+#print("PLAIN TEXT: ","\n",plain_text)
+
+#cipher_text=encrypt(publicKey,plain_text)
+#cipher_text2=''.join([chr(char) for char in cipher_text])
 
 '''with open("2.txt", "wb") as f:
     f.write(bytes.fromhex(cipher_text2))'''
 
-print(spacer,"ENCRYPTION: ","\n",cipher_text)
+#print(spacer,"ENCRYPTION: ","\n",cipher_text)
 
-decrypted_text=decrypt(privateKey,cipher_text)
-print(spacer,"DECRYPTION: ","\n",decrypted_text)
+#decrypted_text=decrypt(privateKey,cipher_text)
+#print(spacer,"DECRYPTION: ","\n",decrypted_text)
 
-print(spacer,"CHECKING THE TEXTS ARE EQUAL:\n",plain_text==decrypted_text)
-
-dec_file = "dec" + file_extension
+#print(spacer,"CHECKING THE TEXTS ARE EQUAL:\n",plain_text==decrypted_text)
 
 # CREATE DECRYPTED FILE =============================
-with open(dec_file, "wb") as f:
-    f.write(bytes.fromhex(decrypted_text)) #conert hex string to bytes and write bytes to file
+
+def create_dec_file(decrypted_text):
+    dec_file = "dec" + file_extension
+    with open(dec_file, "wb") as f:
+        f.write(bytes.fromhex(decrypted_text)) #conert hex string to bytes and write bytes to file
+
+
+
