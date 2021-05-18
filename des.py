@@ -272,8 +272,11 @@ def breakdowntext(s):
         return s
     else: return s
         
+
+def get_key():
+    key = input("Input DES key : ")
     
-key = "AABB09182736CCDD"
+#key = "AABB09182736CCDD"
 # Key generation
 # --hex to binary
 key = hex2bin(key)
@@ -327,14 +330,21 @@ for i in range(0, 16):
 
 
 #OPENING FILE======================================
-file_location = "user input from GUI"
-file_extension = os.path.splitext(file_location)
 
-input=open_file(file_location) #input is a non-broken down hex from the byte contents of the file
+def get_file():
+	file_location = "user input from GUI"
+	return file_location
 
-print("Encryption")
+def get_extension(file_location):
+	file_extension = os.path.splitext(file_location)
+	return file_extension
 
-print("Hex Plain Text : ", input)
+
+#input=open_file(file_location) #input is a non-broken down hex from the byte contents of the file
+
+#print("Encryption")
+
+#print("Hex Plain Text : ", input)
 
 def run_des(plain_text):
     cipher_text = ""
@@ -349,13 +359,14 @@ def run_des(plain_text):
     return cipher_text	
 
 
-cipher_text = run_des(input)
-print("Cipher Text: ", cipher_text)
+#cipher_text = run_des(input)
+#print("Cipher Text: ", cipher_text)
 
 # CREATE ENCRYPTED FILE=================================================
-enc_file = "enc" + file_extension
-with open(enc_file, "wb") as f:
-    f.write(bytes.fromhex(cipher_text))
+def create_enc_file(cipher_text):
+    enc_file = "enc" + file_extension
+	with open(enc_file, "wb") as f:
+		f.write(bytes.fromhex(cipher_text))
 
 
 print("Decryption")
@@ -379,10 +390,27 @@ def decrypt_des(cipher_text):
 
 
     
-plain_text = decrypt_des(cipher_text)
-print("Decrypted cipher text : ", plain_text)
+#plain_text = decrypt_des(cipher_text)
+#print("Decrypted cipher text : ", plain_text)
 
 # CREATE DECRYPTED FILE ======================================================
-dec_file = "dec" + file_extension
-with open(dec_file, "wb") as f:
-    f.write(plain_text)
+def create_dec_file(plain_text):
+    dec_file = "dec" + file_extension
+	with open(dec_file, "wb") as f:
+		f.write(plain_text)
+  
+""""
+HOW TO USE:
+
+1) get_file()
+2) location from file goes into open_file(filename)
+3) get_key() // only HEX keys 16 characters long work
+3) output goes into run_des(plain_text)
+4) create the enc file with create_enc_file(cipher_text) which takes the output of the prev func
+5) run decrypt_des(cipher_text) to get a plain text 
+6) pass plain text to create_dec_file(plain_text)
+
+
+
+
+"""
