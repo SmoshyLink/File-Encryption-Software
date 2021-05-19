@@ -43,7 +43,7 @@ def encrypt():
     elif algo.get() == 2: # RSA
         key = rsa_pubkey_pair.get()
         splitkey = key.split(",")
-        key_tuple = (splitkey[0], splitkey[1])
+        key_tuple = (int(splitkey[0]), int(splitkey[1]))
         rsa.encrypt(key_tuple, file_to_encrypt)
     
     messagebox.showinfo("Encryption Completed", "Your file has been encrypted.")
@@ -65,7 +65,7 @@ def decrypt():
     elif algo.get() == 2: # RSA
         key = rsa_privkey_pair.get()
         splitkey = key.split(",")
-        key_tuple = (splitkey[0], splitkey[1])
+        key_tuple = (int(splitkey[0]), int(splitkey[1]))
         rsa.decrypt(key_tuple, file_to_decrypt)
 
     messagebox.showinfo("Decryption Completed", "Your file has been decrypted.")
